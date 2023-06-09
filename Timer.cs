@@ -12,6 +12,10 @@ public class Timer : MonoBehaviour
 		{
 			StartCoroutine(Second());
 		}
+		else
+		{
+			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+		}
 	}
 	private IEnumerator Second()
 	{
