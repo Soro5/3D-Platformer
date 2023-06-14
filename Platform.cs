@@ -1,40 +1,36 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
 public class Platform : MonoBehaviour
 {
-	[SerializeField] private float speed;
-	[SerializeField] private Transform upperPoint;
-	[SerializeField] private Transform bottomPoint;
+    [SerializeField] private float speed;
+    [SerializeField] private Vector3 direction;
+    [SerializeField] private bool isActive;
 
-	bool goingUp;
-	
-	// Start is called before the first frame update
-	void Start()
-	{
-        	goingUp = false;
-	}
-	// Update is called once per frame
-	void Update()
-	{
-        	if (transform.position.y > upperPoint)
-		{
-			goingUp = false;
-		}
-		if (transform.position.y < bottomPoint)
-		{
-			goingUp = true;
-		}
-	}
-	private void OnCollisonStay(Collision collison)
-	{
-		if (collison.gameObject.CompareTag("Player"))
-		{
-			if (goingUp)
-			{
-				transform.Translate(Vector2.up * speed * Time.deltaTime);
-			}
-			else
-			{
-				transform.Translate(Vector2.down * speed * Time.deltaTime);		
-			}
-		}
-	}
+    private void Update()
+    {
+        if (isActive)
+        {
+            transform.position += direction * speed * Time.deltaTime;
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "PlatformStop")
+        {
+            direction *= -1;
+        }
+        if (other.tag == "Player")
+        {
+            isActive = true;
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            isActive = false;
+        }
+    }
 }
